@@ -126,3 +126,57 @@ Apparently there's something called `embed` too, and yeah, `object`. I see these
 are not exactly for web pages. Anyways, I think I'll get back to them if I need
 them. For now, I think I can stick to `iframe` and do some coding with just this
 :)
+
+So, actually the code in the MDN website
+
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Other_embedding_technologies
+
+It had live example of what I want to do - embedding HTML content into the
+current webpage. HTML content that users type live! ;) But I didn't see the code.
+
+Now, this will also be one of my references for `iframe`
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
+
+Now I want to add a text box - I'm adding a textarea for this. This is where I
+will be typing HTML code that will be rendered in an output box - the `iframe`
+
+I'm keeping the input box on the left and the output on the right
+
+I'm adding CSS to do this. I'm stuck at fitting both the text area and the
+iframe in a single page, without scroll. Apparently I can fix the scrolling with
+something like this with `overflow: hidden`
+
+https://duckduckgo.com/?q=avoid+scrolling+in+web+page&t=ffab&ia=web
+http://stackoverflow.com/questions/28411499/ddg#28411556
+
+https://duckduckgo.com/?q=make+contents+in+a+web+page+to+exactly+fit+full+page&t=ffab&ia=web
+http://stackoverflow.com/questions/41274876/ddg#41274987
+
+https://duckduckgo.com/?t=ffab&q=css+overflow&ia=web
+https://www.w3schools.com/cssref/pr_pos_overflow.asp
+
+But I don't want to do it. I'm simply checking how there's some extra space on
+top of the `textarea`, no matter what I do. I don't seem to get how that space
+is occupied, and hence making the screen scroll. The CSS puts the height of both
+the elements as the full screen. I have to work on the width too next. But I'm
+just stuck at height itself.
+
+I have been quite some research on what's going wrong.
+
+https://css-tricks.com/textarea-tricks/ this didn't help as it was more about
+other tricks
+
+There was always some white space on top of the textarea - very little white
+space - no idea why. I removed all the styling. The only thing that helped was
+to put the `textarea` and the `iframe` into a `div` with flexbox using
+`display: flex`.
+
+For now I'm using `px` - pixels. I'll move to `rem`s later maybe, and have
+different sizing for different devices probably :P
+
+Now it has two elements - one input box and another output box - on the left
+and right. Single page application - without scrolling.
+
+Using `border-sizing: border-box` has helped - this way, the padding is
+considered as part of the `height`

@@ -1,0 +1,28 @@
+html,
+body {
+  height: 100%;
+
+  margin: 0;
+}
+
+div {
+  height: 100%;
+  display: flex;
+}
+
+textarea {
+  margin: 0;
+  padding: 16px;
+  border: none;
+  height: 100%;
+  width: 50%;
+  resize: none;
+  box-sizing: border-box;
+  outline: none;
+}
+
+iframe {
+  border: none;
+  height: 100%;
+  width: 50%;
+}
