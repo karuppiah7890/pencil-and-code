@@ -9,20 +9,16 @@
 
   <body>
     <div>
-      <textarea placeholder="Type your HTML code here"></textarea>
+      <textarea
+        id="html-input"
+        placeholder="Type your HTML code here"
+      ></textarea>
       <iframe
-        srcdoc='<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-        </head>
-        <body>
-            YAY!!
-        </body>
-        </html>'
+        id="html-output"
+        srcdoc="Your HTML output will show up here :) :)"
       ></iframe>
     </div>
+
+    <script src="index.js"></script>
   </body>
 </html>

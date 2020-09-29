@@ -180,3 +180,186 @@ and right. Single page application - without scrolling.
 
 Using `border-sizing: border-box` has helped - this way, the padding is
 considered as part of the `height`
+
+---
+
+I need to write some Js code now - which will take the HTML code I write in the
+input box and put it in the `iframe`'s `srcdoc` attribute value. This way, I
+think the `iframe` will show the latest code's output, but I'm not sure. I
+gotta try it! :)
+
+Now the thing about Js is - usually it's better for it to execute once the page
+has loaded with all the elements in it - this way we can find the elements using
+selectors and process things. What happens when we simply run Js is - it cannot
+find things on the web page at times and it misses to process things we want and
+hence we don't get the features we need. So, for this, usually I have seen
+people using `jquery`'s `$(document).ready()` function. I was checking if a
+simple thing is possible in plain Js
+
+https://duckduckgo.com/?t=ffab&q=run+javascript+only+when+document+is+loaded&ia=web
+
+https://stackoverflow.com/questions/807878/how-to-make-javascript-execute-after-page-load#807895
+
+https://duckduckgo.com/?q=plain+js+version+of+document+read&t=ffab&ia=web&iax=qa
+
+https://stackoverflow.com/questions/9899372/pure-javascript-equivalent-of-jquerys-ready-how-to-call-a-function-when-t#9899701
+
+But I guess it's a funny thing to do - trying to replicate what `jquery` does
+in plain Js - I mean, it's a Js library, if I need to replicate it entirely,
+then I should just copy their code and put it in my code - or I can use a
+simpler basic version, but it won't be a replica of `jquery`'s feature. And I
+don't think I want to actually start supporting many browsers as of now, and I
+don't want to load something heavy like new libraries like `jquery`, as of now.
+But I think soon I'll have to do it, given the amount of features I have thought
+of, and for them to all work perfectly, I'll have to start writing more higher
+level stuff using libraries, I think as I'm not going to reinvent the wheel for
+everything. I'm just learning how something like CodePen might be working
+without looking at any of the full code online for such a thing.
+
+Not gonna use any frameworks/libraries for UI components too as of now - like
+`React`, `Vue`, `Angular` etc. There are so many 🙈 `svelte`, `preact`. Phew.
+
+And then all the transpilation and module bundling. Phew. But yeah, it needs to
+be done once the app grows bigger and bigger and needs high level language
+features and, module bundling to bundle it all into one to be used in the web
+page.
+
+Anyways, back to the code for Js, I saw this code recently
+
+```js
+if (
+  ["complete", "loaded", "interactive"].includes(document.readyState) &&
+  document.body
+) {
+  run();
+} else {
+  document.addEventListener("DOMContentLoaded", run, false);
+}
+```
+
+`document.readyState`
+
+https://duckduckgo.com/?t=ffab&q=document.readyState&ia=web
+https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
+
+I don't see a value called `loaded` in it though. It's not present here
+too in the HTML spec
+
+https://html.spec.whatwg.org/multipage/dom.html#the-document-object
+
+Weirdly I can see it here though
+
+https://www.w3schools.com/jsref/prop_doc_readystate.asp
+
+Maybe it was an old value. I don't seem to find it in the latest spec at least.
+I think `interactive` and `complete` are valid. :) And then we can check if the
+`body` exists with `document.body`
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/body
+
+And then we can use the `DOMContentLoaded` event
+
+https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
+
+Apparently, the event can fire before the Js script can run, so it's good to
+check the document ready state before adding a listener like the above code.
+
+There's also some content on making the page load faster - faster DOM parsing.
+
+Something for optimized CSS delivery
+https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery
+
+There's also some version of Page Speed Insights
+https://developers.google.com/speed/docs/insights/v5/about
+
+Something for me to read once I want to start optimizing things. For now let me
+make things work :P
+
+Now I need to see where to put the `script` tag for my Js file
+
+While searching for this, I found this
+
+http://www.javascriptkit.com/javatutors/loadjavascriptcss.shtml
+http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml
+
+I'll need it for later, when I want to dynamically add features to the website
+if the user enables the features ;) :D
+
+There seems to be many things on the Internet about this. I read this one a bit
+
+https://humanwhocodes.com/blog/2009/07/28/the-best-way-to-load-external-javascript/
+
+https://www.w3schools.com/js/js_whereto.asp
+
+I'm going to put my `script` just before the closing tag `</body>`
+
+Cool, I started writing my Js code. I didn't use `id` or any specific easy way
+to find my HTML elements using `name` or even `class`. I started using tag names
+and I realized I added event listener function to a list and not to an element
+
+```js
+const textarea = document.getElementsByTagName("textarea");
+// error!
+textarea.addEventListener("keyup", function () {
+  console.log(textarea.value);
+});
+```
+
+And there's no `document.getElementByTagName`, I mean, it makes sense, easily
+it's possible to have many elements with the same tag, it doesn't make sense to
+support to get one - one could just get the list and use `[0]` to get the first
+element. Anyways, I'm going to use `id`s I think ;)
+
+```html
+<textarea id="html-input" placeholder="Type your HTML code here"></textarea>
+```
+
+So, this works now
+
+```js
+const textarea = document.getElementById("html-input");
+textarea.addEventListener("keyup", function () {
+  console.log(textarea.value);
+});
+```
+
+But the only thing is, this function will be called a lot of times when the user
+types very fast - for now it's okay I guess. It will be very real time to see
+the output on the right. Later, maybe we can have some sort of the "debounce"
+mechanism and if there are multiple key presses in a few moments, capture it all
+together as a batch and then invoke the function - something like that. Anyways,
+now let's create the output!! :D :D
+
+Wow! I was able to do it! It was pretty simple!! :D
+
+```js
+const htmlInput = document.getElementById("html-input");
+const htmlOutput = document.getElementById("html-output");
+htmlInput.addEventListener("keyup", function () {
+  htmlOutput.setAttribute("srcdoc", htmlInput.value);
+});
+```
+
+I tried this input
+
+```html
+yay! wowow
+
+<strong style="color: blue; font-size: 20px;">Cool Huh!</strong> :D :D I can see
+what I write in real time!!! :D
+
+<script>
+  alert("ok");
+</script>
+```
+
+It was hard though, yeah, whenever I typed something, it showed the output in
+real time - so when I was trying to do the `alert`, every key press, I got an
+alert while I was trying to implement it. One thing to note is - I can run
+Js scripts inside the output ;)
+
+I just tried the same input with `sandbox=""` in the `iframe` and it didn't
+run the Js script. But I think it's okay for now without sanbox as I do want to
+run scripts in the future. I don't see any issues really with no sandbox, as of
+now, as this is only an experiment, so I'm not going to use the `sandbox`
+attribute in the `iframe`
